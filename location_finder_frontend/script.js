@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
     // PASTE YOUR GOOGLE CLOUD FUNCTION TRIGGER URL HERE
-    const BACKEND_URL = 'PASTE_YOUR_URL_HERE'; 
+    const BACKEND_URL = https://find-locations-backend-1077850671516.asia-south2.run.app/; 
 
     // --- ELEMENT REFERENCES ---
     const findBtn = document.getElementById('find-btn');
