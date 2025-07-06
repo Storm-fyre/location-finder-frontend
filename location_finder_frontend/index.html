@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Finder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Location Finder</h1>
+        <div class="input-section">
+            <label for="region">Enter a Region (e.g., 'Kadiyam Mandal'):</label>
+            <input type="text" id="region" placeholder="Enter region...">
+
+            <label>Enter Location Types (at least 2):</label>
+            <div id="location-types-container">
+                <input type="text" class="location-type" placeholder="e.g., 'Sai Baba Temple'">
+                <input type="text" class="location-type" placeholder="e.g., 'Medical Store'">
+            </div>
+            <button id="add-type-btn">Add Another Location Type</button>
+
+            <button id="find-btn">Find Closest Locations</button>
+        </div>
+
+        <div class="results-section">
+            <h2>Results</h2>
+            <div id="results-output">
+                <p>Your results will be displayed here.</p>
+            </div>
+            <div id="loading-spinner" class="hidden"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
