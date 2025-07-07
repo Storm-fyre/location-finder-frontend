@@ -3,35 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Location Finder</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Location Finder Pro</title>
+    <!-- Adding a modern font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color-start: #6a11cb;
+            --primary-color-end: #2575fc;
+            --background-color: #f0f2f5;
+            --container-bg: #ffffff;
+            --text-color: #333;
+            --label-color: #555;
+            --border-color: #dee2e6;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 40px;
+            background: var(--container-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 700;
+            font-size: 2.2em;
+            background: linear-gradient(45deg, var(--primary-color-start), var(--primary-color-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: var(--label-color);
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color-end);
+            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.2);
+        }
+        
+        button#find-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-image: linear-gradient(45deg, var(--primary-color-start) 0%, var(--primary-color-end) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        button#find-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        button#find-btn:disabled {
+            background-image: none;
+            background-color: #cdd2d8;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #results {
+            margin-top: 40px;
+        }
+
+        .result-pair {
+            background-color: #f8f9fa;
+            border-left: 5px solid;
+            border-image: linear-gradient(to bottom, var(--primary-color-start), var(--primary-color-end)) 1;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-pair h3 { margin-top: 0; }
+        .result-item { display: flex; align-items: center; margin-bottom: 10px; }
+        .result-item svg { margin-right: 10px; flex-shrink: 0; }
+        
+        .spinner {
+            margin: 40px auto 0;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(0,0,0,0.1);
+            border-top-color: var(--primary-color-end);
+            border-radius: 50%;
+            animation: spin 1s ease-in-out infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Location Finder</h1>
-        <div class="input-section">
-            <label for="region">Enter a Region (e.g., 'Kadiyam Mandal'):</label>
-            <input type="text" id="region" placeholder="Enter region...">
 
-            <label>Enter Location Types (at least 2):</label>
-            <div id="location-types-container">
-                <input type="text" class="location-type" placeholder="e.g., 'Sai Baba Temple'">
-                <input type="text" class="location-type" placeholder="e.g., 'Medical Store'">
-            </div>
-            <button id="add-type-btn">Add Another Location Type</button>
+<div class="container">
+    <h1>Location Finder Pro</h1>
 
-            <button id="find-btn">Find Closest Locations</button>
-        </div>
-
-        <div class="results-section">
-            <h2>Results</h2>
-            <div id="results-output">
-                <p>Your results will be displayed here.</p>
-            </div>
-            <div id="loading-spinner" class="hidden"></div>
-        </div>
+    <div class="form-group">
+        <label for="region">Enter Region</label>
+        <input type="text" id="region" required placeholder="e.g., Kadiyam Mandal">
     </div>
 
-    <script src="script.js"></script>
+    <div class="form-group">
+        <label>Enter Location Types</label>
+        <div id="location-types-container">
+            <input type="text" placeholder="Location Type 1 (e.g., Sai Baba Temple)" style="margin-bottom: 10px;">
+            <input type="text" placeholder="Location Type 2 (e.g., Medical Store)">
+        </div>
+    </div>
+    
+    <button id="find-btn">Find Closest Locations</button>
+    
+    <div class="spinner" id="loader"></div>
+    <div id="results"></div>
+</div>
+
+<script>
+    const findBtn = document.getElementById('find-btn');
+    const regionInput = document.getElementById('region');
+    const typesContainer = document.getElementById('location-types-container');
+    const resultsDiv = document.getElementById('results');
+    const loader = document.getElementById('loader');
+
+    // !!! IMPORTANT: REPLACE THIS URL WITH YOUR CLOUD RUN URL !!!
+    const apiUrl = 'https://locating-921423594307.asia-south1.run.app/api/find-locations';
+
+    findBtn.addEventListener('click', async () => {
+        const region = regionInput.value.trim();
+        const locationTypes = Array.from(typesContainer.querySelectorAll('input'))
+                                   .map(input => input.value.trim())
+                                   .filter(type => type !== '');
+
+        if (!region || locationTypes.length < 2) {
+            alert('Please provide a region and at least two location types.');
+            return;
+        }
+
+        loader.style.display = 'block';
+        resultsDiv.innerHTML = '';
+        findBtn.disabled = true;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ region: region, location_types: locationTypes })
+            });
+
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            const data = await response.json();
+            displayResults(data);
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            resultsDiv.innerHTML = `<p style="color:red; text-align:center;">An error occurred. Please check the API URL and ensure there are no CORS errors (Press F12 to check console).</p>`;
+        } finally {
+            loader.style.display = 'none';
+            findBtn.disabled = false;
+        }
+    });
+
+    function displayResults(pairs) {
+        if (!pairs || pairs.length === 0) {
+            resultsDiv.innerHTML = '<p style="text-align:center;">No results found.</p>';
+            return;
+        }
+
+        let html = '';
+        pairs.forEach((pair, index) => {
+            html += `
+                <div class="result-pair">
+                    <h3>Pair ${index + 1}</h3>
+                    <div class="result-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <div>
+                            <strong>${pair.location1.type}:</strong> ${pair.location1.name}<br>
+                            <em style="color:#666; font-size:0.9em;">${pair.location1.address}</em>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <div>
+                            <strong>${pair.location2.type}:</strong> ${pair.location2.name}<br>
+                            <em style="color:#666; font-size:0.9em;">${pair.location2.address}</em>
+                        </div>
+                    </div>
+                     <div class="result-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 12.5L12 22l-4.5-9.5L3 8l9.5-4.5L22 8z"></path></svg>
+                        <div>
+                            <strong>Distance:</strong> ${(pair.distance / 1000).toFixed(2)} km
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        resultsDiv.innerHTML = html;
+    }
+</script>
+
 </body>
 </html>
